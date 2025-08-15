@@ -1,6 +1,7 @@
 import logger from '../utils/logger.js';
 import Post from '../models/post.model.js';
 import { ValidateCreatePost } from '../utils/validation.js';
+
 const createPost = async (req, res) => {
   logger.info('Create post endpoint hit..');
   try {
@@ -34,6 +35,22 @@ const createPost = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const posts = await Post.find({})
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    const totalPosts = await Post.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      message: 'Posts fetched successfully',
+    });
+    await Post.find({});
   } catch (error) {
     logger.error('Error fetching posts', error);
     res.status(500).json({
