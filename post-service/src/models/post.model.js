@@ -11,7 +11,13 @@ const postSchema = new Schema(
       type: String,
       required: true,
     },
-    mediaIds: [{ type: String }],
+    // mediaIds: [{ type: String }],
+    mediaIds: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Media',
+      },
+    ],
     createdAt: {
       type: Date,
       default: Date.now,

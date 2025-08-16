@@ -1,4 +1,4 @@
-import  logger  from '../utils/logger.js';
+import logger from '../utils/logger.js';
 import Post from '../models/post.model.js';
 import { ValidateCreatePost } from '../utils/validation.js';
 
@@ -24,7 +24,7 @@ const createPost = async (req, res) => {
       });
     }
     const { content, mediaIds } = req.body;
-    const newPost = await Post.create({
+    let newPost = await Post.create({
       user: req.user.userId,
       content,
       mediaIds: mediaIds || [],
