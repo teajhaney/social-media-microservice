@@ -3,7 +3,7 @@ dotenv.config();
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import RefreshToken from '../models/refreshToken.model.js';
-import logger from '../utils/logger.js';
+
 const generateTokens = async user => {
   const accessToken = jwt.sign(
     {

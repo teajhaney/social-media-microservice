@@ -11,7 +11,6 @@ import logger from './utils/logger.js';
 import errorHandler from './middleware/errorHandler.js';
 import validateToken from './middleware/auth.middleware.js';
 
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -24,7 +23,7 @@ app.use(express.json());
 //rate limitng
 const endpointRateLimit = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, 
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
