@@ -11,9 +11,9 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uplaodMediaToCloudinary = async file => {
+const uploadMediaToCloudinary = async file => {
   return new Promise((resolve, reject) => {
-    const uplaodStream = cloudinary.uploader.upload_stream(
+    const uploadStream = cloudinary.v2.uploader.upload_stream(
       {
         resource_type: 'auto',
       },
@@ -25,9 +25,9 @@ const uplaodMediaToCloudinary = async file => {
           resolve(result);
         }
       }
-	);
-	  uplaodStream.end(file.buffer);
+    );
+    uploadStream.end(file.buffer);
   });
 };
 
-export { uplaodMediaToCloudinary };
+export { uploadMediaToCloudinary };

@@ -14,9 +14,9 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, //5MB
 }).single('media');
 
-router.use(authenticateRequest);
 
-router.get(
+
+router.post(
   '/upload',
   authenticateRequest,
   (req, res, next) => {

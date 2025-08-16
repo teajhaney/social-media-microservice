@@ -24,7 +24,7 @@ const mediaSchema = new Schema(
       required: true,
     },
   },
-  { timeseries: true }
+  { timestamps: true }
 );
 
 const Media = model('Media', mediaSchema);

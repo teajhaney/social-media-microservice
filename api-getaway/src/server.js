@@ -91,8 +91,6 @@ app.use(
     proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
       proxyReqOpts.headers['Content-Type'] = 'application/json';
       proxyReqOpts.headers['x-user-id'] = srcReq.user.userId;
-      console.log('User in gateway:', srcReq.user);
-      console.log('x-user-id to send:', srcReq.user.userId);
       return proxyReqOpts;
     },
     userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
@@ -104,6 +102,31 @@ app.use(
   })
 );
 
+//settings up proxy for media service
+app.use(
+  '/v1/media',
+  validateToken,
+  proxy(process.env.MEDIA_SERVICE_URL, {
+    ...proxyOptions,
+    target: process.env.MEDIA_SERVICE_URL,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers['x-user-id'] = srcReq.user.userId;
+      if (!srcReq.headers['content-type'].includes('multipart/form-data')) {
+        proxyReqOpts.headers['Content-Type'] = 'application/json';
+      }
+      return proxyReqOpts;
+    },
+    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+      logger.info(
+        `Response received from media services: ${proxyRes.statusCode}`
+      );
+      return proxyResData;
+    },
+    parseReqBody: false,
+  })
+);
+
+//error handler
 app.use(errorHandler);
 
 app.listen(PORT, () => {
@@ -113,6 +136,9 @@ app.listen(PORT, () => {
   );
   logger.info(
     `Post service is running on port ${process.env.POST_SERVICE_URL}`
+  );
+  logger.info(
+    `Media service is running on port ${process.env.MEDIA_SERVICE_URL}`
   );
   logger.info(`Redis url${process.env.REDIS_URL}`);
 });
