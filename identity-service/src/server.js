@@ -82,7 +82,10 @@ app.use('/api/auth', authRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () => [
-  logger.info(`Identity Server is running on port ${PORT}`),
+	logger.info(`Identity Server is running on port ${PORT}`),
+	  logger.info(
+    `Identity service is running on port ${process.env.IDENTITY_SERVICE_URL}`
+  )
 ]);
 
 //unhandle promise rejection handler

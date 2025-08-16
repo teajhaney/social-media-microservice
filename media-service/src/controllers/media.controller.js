@@ -1,6 +1,6 @@
-import logger from '../utils/logger';
-import { uplaodMediaToCloudinary } from '../utils/cloudinary';
-import Media from '../models/media.model';
+import logger from '../utils/logger.js';
+import { uplaodMediaToCloudinary } from '../utils/cloudinary.js';
+import Media from '../models/media.model.js';
 
 export const uploadMedia = async (req, res) => {
   logger.info('Starting media upload..');
