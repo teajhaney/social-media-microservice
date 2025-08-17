@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 
 import { authenticateRequest } from '../middlewares/auth.middleware.js';
-import { uploadMedia } from '../controllers/media.controller.js';
+import { uploadMedia, getAllMedia } from '../controllers/media.controller.js';
 import logger from '../utils/logger.js';
 
 const router = express.Router();
@@ -13,8 +13,6 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, //5MB
 }).single('media');
-
-
 
 router.post(
   '/upload',
@@ -50,5 +48,7 @@ router.post(
   },
   uploadMedia
 );
+
+router.get('/get', authenticateRequest, getAllMedia);
 
 export default router;

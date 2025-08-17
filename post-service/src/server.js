@@ -12,6 +12,7 @@ import connectDB from './database/connectDB.js';
 import logger from './utils/logger.js';
 import postRoutes from './routes/post.route.js';
 import errorHandler from './middlewares/errorHandler.js';
+import { connectRabbitMQ } from './utils/rabbitmq.js';
 
 const PORT = process.env.PORT || 3002;
 const app = express();
@@ -91,6 +92,17 @@ app.use(
 
 //error handler middleware
 app.use(errorHandler);
+
+const startRAbbitMQServer = async () => {
+  try {
+    await connectRabbitMQ();
+  } catch (error) {
+    logger.error('Error connecting to RabbitMQ', error);
+    process.exit;
+  }
+};
+
+startRAbbitMQServer();
 
 app.listen(PORT, () => {
   logger.info(`Server started on port ${PORT}`);

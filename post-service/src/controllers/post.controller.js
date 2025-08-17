@@ -1,6 +1,7 @@
 import logger from '../utils/logger.js';
 import Post from '../models/post.model.js';
 import { ValidateCreatePost } from '../utils/validation.js';
+import { publishEvent } from '../utils/rabbitmq.js';
 
 const invalidatePostCache = async (req, input) => {
   const cachedKey = `posts:${input}`;
@@ -141,8 +142,6 @@ const deletePost = async (req, res) => {
       user: req.user.userId,
     });
 
-    //invalidate redis post
-    await invalidatePostCache(req, postId.toString());
     if (!post) {
       logger.warn('Post not found');
       return res.status(404).json({
@@ -150,6 +149,16 @@ const deletePost = async (req, res) => {
         message: 'Post not found',
       });
     }
+    //publish post delete method
+
+    await publishEvent('post.deleted', {
+      postId: post._id.toString(),
+      userId: req.user.userId.toString(),
+      mediaIds: post.mediaIds,
+    });
+
+    //invalidate redis post
+    await invalidatePostCache(req, postId.toString());
 
     logger.info('Post deleted successfully', post);
     return res.status(200).json({

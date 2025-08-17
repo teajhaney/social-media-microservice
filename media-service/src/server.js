@@ -12,6 +12,8 @@ import connectDB from './database/connectDB.js';
 import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.js';
 import mediaRoutes from './routes/media.route.js';
+import { connectRabbitMQ, consumeEvent } from './utils/rabbitmq.js';
+import { handlePostDeleted } from './eventHandlers/media.event.handler.js';
 
 const PORT = process.env.PORT || 3003;
 const app = express();
@@ -86,6 +88,20 @@ app.use(
 
 //error handler middleware
 app.use(errorHandler);
+
+const startRAbbitMQServer = async () => {
+	try {
+		await connectRabbitMQ();
+	//consume all the events	
+    await consumeEvent('post.deleted', handlePostDeleted);
+  } catch (error) {
+    logger.error('Error consuming event', error);
+    process.exit;
+  }
+};
+
+
+startRAbbitMQServer();
 
 app.listen(PORT, () => {
   logger.info(`Server started on port ${PORT}`);

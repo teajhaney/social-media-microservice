@@ -53,3 +53,23 @@ export const uploadMedia = async (req, res) => {
     });
   }
 };
+
+export const getAllMedia = async (req, res) => {
+  try {
+    const medias = await Media.find({});
+    const count =await  Media.countDocuments();
+    logger.info('Media fetched successfully', medias);
+    res.status(200).json({
+      success: true,
+      message: 'Media fetched successfully',
+      length: count,
+      data: medias,
+    });
+  } catch (error) {
+    logger.error('Error fetching media posts', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching media',
+    });
+  }
+};
