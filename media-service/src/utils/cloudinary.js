@@ -41,4 +41,4 @@ const deleteMediaFromCloudinary = async publicId => {
   }
 };
 
-export { uploadMediaToCloudinary };
+export { uploadMediaToCloudinary, deleteMediaFromCloudinary };
