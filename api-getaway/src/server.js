@@ -81,6 +81,8 @@ app.use(
   })
 );
 
+
+
 //setting up proxy for post service
 app.use(
   '/v1/posts',
@@ -123,6 +125,27 @@ app.use(
       return proxyResData;
     },
     parseReqBody: false,
+  })
+);
+
+//setting up proxy for search service
+app.use(
+  '/v1/search',
+  validateToken,
+  proxy(process.env.SEARCH_SERVICE_URL, {
+    ...proxyOptions,
+    target: process.env.SEARCH_SERVICE_URL,
+    proxyReqOptDecorator: (proxyReqOpts, srcReq) => {
+      proxyReqOpts.headers['Content-Type'] = 'application/json';
+      proxyReqOpts.headers['x-user-id'] = srcReq.user.userId;
+      return proxyReqOpts;
+    },
+    userResDecorator: (proxyRes, proxyResData, userReq, userRes) => {
+      logger.info(
+        `Response received from search services: ${proxyRes.statusCode}`
+      );
+      return proxyResData;
+    },
   })
 );
 

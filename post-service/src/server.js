@@ -96,6 +96,7 @@ app.use(errorHandler);
 const startRAbbitMQServer = async () => {
   try {
     await connectRabbitMQ();
+    logger.info('Connected to RabbitMQ');
   } catch (error) {
     logger.error('Error connecting to RabbitMQ', error);
     process.exit;

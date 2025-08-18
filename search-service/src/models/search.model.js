@@ -9,8 +9,7 @@ const searchSchema = new Schema(
     },
     userId: {
       type: String,
-      required: true,
-      unique: true,
+		required: true,
     },
     content: {
       type: String,
@@ -18,7 +17,6 @@ const searchSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now,
       required: true,
     },
   },
@@ -26,6 +24,8 @@ const searchSchema = new Schema(
 );
 
 searchSchema.index({ content: 'text' });
-searchSchema.index({ createdAt : -1 });
+searchSchema.index({ createdAt: -1 });
 
-export const Search = model('Search', searchSchema);
+const Search = model('Search', searchSchema);
+
+export default Search;

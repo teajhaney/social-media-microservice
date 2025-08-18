@@ -4,7 +4,6 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import redis from 'ioredis';
-import redis from 'ioredis';
 import { RateLimiterRedis } from 'rate-limiter-flexible';
 import { RedisStore } from 'rate-limit-redis';
 import { rateLimit } from 'express-rate-limit';
@@ -14,6 +13,7 @@ import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.js';
 import { connectRabbitMQ, consumeEvent } from './utils/rabbitMQ.js';
 import searchRoutes from './routes/search.route.js';
+import { handleSaveToSearchEvent } from './eventHandlers/search.event.handler.js';
 
 const PORT = process.env.PORT || 3004;
 const app = express();
@@ -78,7 +78,7 @@ app.use('/api/posts/search', sensitiveEndpointLimiter);
 
 //Routes-> pass redisclient to route
 app.use(
-  '/api/posts',
+  '/api/search',
   (req, res, next) => {
     req.redisClient = redisClient;
     next();
@@ -92,8 +92,9 @@ app.use(errorHandler);
 const startRAbbitMQServer = async () => {
   try {
     await connectRabbitMQ();
+    logger.info('Connected to RabbitMQ');
     //consume all the events
-    await consumeEvent('post.deleted', handleSearchEvent);
+    await consumeEvent('post.created', handleSaveToSearchEvent);
   } catch (error) {
     logger.error('Error connecting to RabbitMQ', error);
     process.exit;
