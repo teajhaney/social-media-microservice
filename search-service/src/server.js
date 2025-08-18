@@ -13,7 +13,10 @@ import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.js';
 import { connectRabbitMQ, consumeEvent } from './utils/rabbitMQ.js';
 import searchRoutes from './routes/search.route.js';
-import { handleSaveToSearchEvent } from './eventHandlers/search.event.handler.js';
+import {
+  handleSaveToSearchEvent,
+  handleDeleteFromSearch,
+} from './eventHandlers/search.event.handler.js';
 
 const PORT = process.env.PORT || 3004;
 const app = express();
@@ -74,7 +77,7 @@ const sensitiveEndpointLimiter = rateLimit({
 });
 
 //apply sensitve endpoint to our routes
-app.use('/api/posts/search', sensitiveEndpointLimiter);
+app.use('/api/search/posts', sensitiveEndpointLimiter);
 
 //Routes-> pass redisclient to route
 app.use(
@@ -95,6 +98,7 @@ const startRAbbitMQServer = async () => {
     logger.info('Connected to RabbitMQ');
     //consume all the events
     await consumeEvent('post.created', handleSaveToSearchEvent);
+    await consumeEvent('post.deleted', handleDeleteFromSearch);
   } catch (error) {
     logger.error('Error connecting to RabbitMQ', error);
     process.exit;

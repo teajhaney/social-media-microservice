@@ -29,7 +29,8 @@ const createPost = async (req, res) => {
       user: req.user.userId,
       content,
       mediaIds: mediaIds || [],
-    });
+	});
+	  
     //publish save event
     await publishEvent('post.created', {
       postId: newPost._id.toString(),
@@ -147,7 +148,8 @@ const deletePost = async (req, res) => {
     const post = await Post.findOneAndDelete({
       _id: postId,
       user: req.user.userId,
-    });
+	});
+	
 
     if (!post) {
       logger.warn('Post not found');

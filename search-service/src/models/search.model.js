@@ -10,6 +10,7 @@ const searchSchema = new Schema(
     userId: {
       type: String,
 		required: true,
+		index: true,
     },
     content: {
       type: String,

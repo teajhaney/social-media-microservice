@@ -3,7 +3,7 @@ import { deleteMediaFromCloudinary } from '../utils/cloudinary.js';
 import logger from '../utils/logger.js';
 
 export const handlePostDeleted = async event => {
-  console.log(event, 'eventtttttttt...');
+ logger.info('post deleted event received')
   const { postId, mediaIds } = event;
   try {
     const mediaToDelete = await Media.find({ _id: { $in: mediaIds } });
