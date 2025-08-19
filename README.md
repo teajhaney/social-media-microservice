@@ -46,50 +46,6 @@ docker-compose up --build -d
 ```
 This command will build the Docker images for all services and start them in detached mode.
 
-### Environment Variables
-All services require specific environment variables to function correctly. Ensure these are set in their respective `.env` files.
-
-*   **API Gateway (`api-gateway/.env`)**
-    *   `PORT=3000`
-    *   `NODE_ENV=development`
-    *   `IDENTITY_SERVICE_URL=http://identity-service:3001`
-    *   `POST_SERVICE_URL=http://post-service:3002`
-    *   `MEDIA_SERVICE_URL=http://media-service:3003`
-    *   `SEARCH_SERVICE_URL=http://search-service:3004`
-    *   `REDIS_URL=redis://redis:6379`
-    *   `JWT_SECRET=12345` (Use a strong, complex secret in production)
-
-*   **Identity Service (`identity-service/.env`)**
-    *   `PORT=3001`
-    *   `NODE_ENV=development`
-    *   `MONGODB_URI=mongodb://localhost:27017/identitydb` (Replace with your MongoDB connection string)
-    *   `REDIS_URL=redis://redis:6379`
-    *   `JWT_SECRET=12345` (Must match API Gateway's JWT_SECRET)
-    *   `RABBITMQ_URL=amqp://teajhaney:yusfaith%4010@rabbitmq:5672`
-
-*   **Post Service (`post-service/.env`)**
-    *   `PORT=3002`
-    *   `NODE_ENV=development`
-    *   `MONGODB_URI=mongodb://localhost:27017/postdb` (Replace with your MongoDB connection string)
-    *   `REDIS_URL=redis://redis:6379`
-    *   `RABBITMQ_URL=amqp://teajhaney:yusfaith%4010@rabbitmq:5672`
-
-*   **Media Service (`media-service/.env`)**
-    *   `PORT=3003`
-    *   `NODE_ENV=development`
-    *   `MONGODB_URI=mongodb://localhost:27017/mediadb` (Replace with your MongoDB connection string)
-    *   `REDIS_URL=redis://redis:6379`
-    *   `CLOUDINARY_CLOUD_NAME=your_cloud_name`
-    *   `CLOUDINARY_API_KEY=your_api_key`
-    *   `CLOUDINARY_API_SECRET=your_api_secret`
-    *   `RABBITMQ_URL=amqp://teajhaney:yusfaith%4010@rabbitmq:5672`
-
-*   **Search Service (`search-service/.env`)**
-    *   `PORT=3004`
-    *   `NODE_ENV=development`
-    *   `MONGODB_URI=mongodb://localhost:27017/searchdb` (Replace with your MongoDB connection string)
-    *   `REDIS_URL=redis://redis:6379`
-    *   `RABBITMQ_URL=amqp://teajhaney:yusfaith%4010@rabbitmq:5672`
 
 ## API Documentation
 
