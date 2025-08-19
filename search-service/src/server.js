@@ -11,7 +11,7 @@ import { rateLimit } from 'express-rate-limit';
 import connectDB from './database/connectDB.js';
 import logger from './utils/logger.js';
 import errorHandler from './middlewares/errorHandler.js';
-import { connectRabbitMQ, consumeEvent } from './utils/rabbitMQ.js';
+import { connectRabbitMQ, consumeEvent } from './utils/rabbitmq.js';
 import searchRoutes from './routes/search.route.js';
 import {
   handleSaveToSearchEvent,
